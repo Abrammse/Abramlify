@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { FeedService } from '../service/feed.service';
 import { Feedpost } from '../models/post.interface';
@@ -21,9 +22,18 @@ export class FeedController {
     return this.feedService.create(feedpost);
   }
 
+  // @Get('get')
+  // findAll(): Observable<Feedpost[]> {
+  //   return this.feedService.findAll();
+  // }
+
   @Get('get')
-  findAll(): Observable<Feedpost[]> {
-    return this.feedService.findAll();
+  findSelected(
+    @Query('take') take: number = 1,
+    @Query('skip') skip: number = 1,
+  ): Observable<Feedpost[]> {
+    take = take > 2 ? 2 : take;
+    return this.feedService.findPosts(take, skip);
   }
 
   @Put(':id')

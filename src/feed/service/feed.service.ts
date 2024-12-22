@@ -4,6 +4,7 @@ import { FeedPostentity } from '../models/post.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { Feedpost } from '../models/post.interface';
 import { from, Observable } from 'rxjs';
+import { User } from 'src/auth/models/user.nterface';
 @Injectable()
 export class FeedService {
   constructor(
@@ -11,7 +12,8 @@ export class FeedService {
     private readonly feedpostRepository: Repository<FeedPostentity>,
   ) {}
 
-  create(feedpost: Feedpost): Observable<Feedpost> {
+  create(user: User, feedpost: Feedpost): Observable<Feedpost> {
+    feedpost.author = user;
     return from(this.feedpostRepository.save(feedpost));
   }
 

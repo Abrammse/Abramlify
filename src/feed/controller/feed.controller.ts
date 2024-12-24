@@ -29,17 +29,17 @@ export class FeedController {
     return this.feedService.create(req.user, feedpost);
   }
 
-  // @Get('get')
-  // findAll(): Observable<Feedpost[]> {
-  //   return this.feedService.findAll();
-  // }
+   @Get('ge')
+  findAll(): Observable<Feedpost[]> {
+     return this.feedService.findAll();
+   }
 
   @Get('get')
   findSelected(
     @Query('take') take: number = 1,
     @Query('skip') skip: number = 1,
   ): Observable<Feedpost[]> {
-    take = take > 2 ? 2 : take;
+    take = take > 20 ? 20 : take;
     return this.feedService.findPosts(take, skip);
   }
 

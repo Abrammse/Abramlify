@@ -15,14 +15,18 @@ import { Feedpost } from '../models/post.interface';
 import { Observable } from 'rxjs';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
+import { Roles } from 'src/auth/decortors/roles.decorator';
+import { Role } from 'src/auth/models/role.enum';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @Controller('feed')
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
-  @UseGuards(JwtGuard)
+  @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(JwtGuard, RolesGuard)
   @Post()
-  create(@Body() feedpost: Feedpost, @Request() req):Observable<Feedpost> {
-    return this.feedService.create(req.user,feedpost);
+  create(@Body() feedpost: Feedpost, @Request() req): Observable<Feedpost> {
+    return this.feedService.create(req.user, feedpost);
   }
 
   // @Get('get')
